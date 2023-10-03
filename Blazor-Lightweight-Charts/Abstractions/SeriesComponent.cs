@@ -1,5 +1,6 @@
 ﻿using Blazor_Lightweight_Charts.Model.Series;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,11 @@ namespace Blazor_Lightweight_Charts.Abstractions
 
                 await Initialize();
             }
+        }
+
+        protected override void BuildRenderTree(RenderTreeBuilder builder)
+        {
+            base.BuildRenderTree(builder);
         }
 
         protected async Task Initialize()
