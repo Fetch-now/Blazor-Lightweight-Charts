@@ -1,0 +1,40 @@
+﻿@    using Blazor_Lightweight_Charts.Model;
+@    using Blazor_Lightweight_Charts.Model.Parameters;
+@    using Blazor_Lightweight_Charts.Model.Series;
+    using Blazor_Lightweight_Charts.Model.Parameters.ChartParameters;
+@inject LightweighChartsInterop Interop;
+
+<div @ref="ChartReference" class="lightweight-chart" id="">
+
+</div>
+
+@code {
+    Guid ChartId { get; set; } = Guid.NewGuid();
+
+    protected ElementReference ChartReference;
+    protected ChartApi Chart { get; set; } = null!;
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            ChartOptions options = new ChartOptions()
+                {
+                    Width = 400,
+                    Height = 400
+                };
+            Chart = await Interop.CreateChart(ChartReference, options);
+            DateTime today = DateTime.UtcNow;
+            List<LineSeriesItem> items = new List<LineSeriesItem>();
+            Random rng = new Random();
+            for (int i = 0; i < 20; i++)
+            {
+                DateTime date = today.AddDays(i);
+                double value = rng.Next(0, 2000);
+                items.Add(new LineSeriesItem(date, value));
+            }
+
+            await Chart.AddLineSeries(items.ToArray());
+        }
+    }
+}

@@ -1,3 +1,6 @@
+using Blazor_Lightweight_Charts.Model;
+using Blazor_Lightweight_Charts.Model.Parameters.ChartParameters;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace Blazor_Lightweight_Charts
@@ -9,29 +12,20 @@ namespace Blazor_Lightweight_Charts
     // This class can be registered as scoped DI service and then injected into Blazor
     // components for use.
 
-    public class LightweighChartsInterop : IAsyncDisposable
+    public class LightweighChartsInterop
     {
-        private readonly Lazy<Task<IJSObjectReference>> moduleTask;
+        private readonly IJSRuntime JS;
 
         public LightweighChartsInterop(IJSRuntime jsRuntime)
         {
-            moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/Blazor_Lightweight_Charts/exampleJsInterop.js").AsTask());
+            JS = jsRuntime;
         }
 
-        public async ValueTask<string> Prompt(string message)
+        public async Task<ChartApi> CreateChart(ElementReference reference, ChartOptions options)
         {
-            var module = await moduleTask.Value;
-            return await module.InvokeAsync<string>("showPrompt", message);
-        }
+            var instance = await JS.InvokeAsync<IJSObjectReference>("LightweightCharts.createChart", reference, options);
 
-        public async ValueTask DisposeAsync()
-        {
-            if (moduleTask.IsValueCreated)
-            {
-                var module = await moduleTask.Value;
-                await module.DisposeAsync();
-            }
+            return new ChartApi(instance);
         }
     }
 }
