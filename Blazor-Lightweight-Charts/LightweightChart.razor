@@ -15,7 +15,7 @@
     protected ChartApi Chart { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    public RenderFragment ChildContent { get; set; } = null!;
     public bool IsInitialized { get; set; } = false;
 
     public async void AddSeries<T>(IEnumerable<T> items, string invocation) where T : TimeValueData
