@@ -1,0 +1,40 @@
+﻿@using Blazor_Lightweight_Charts.Abstractions;
+@using Blazor_Lightweight_Charts.Model.Series;
+@typeparam TItem;
+@inherits SingleValueSeriesComponent<TItem, AreaSeriesItem>;
+
+@code {
+    [Parameter]
+    public Func<TItem, string>? LineColor { get; set; }
+
+    [Parameter]
+    public Func<TItem, string>? BottomColor { get; set; }
+
+    [Parameter]
+    public Func<TItem, string>? TopColor { get; set; }
+
+    public override string Invocation => "addAreaSeries";
+
+    protected async override Task<AreaSeriesItem> MapItem(TItem item)
+    {
+        double value = Value(item);
+        DateTime date = Date(item);
+        AreaSeriesItem newItem = new AreaSeriesItem(date, value);
+        if (LineColor != null)
+        {
+            newItem.LineColor = LineColor(item);
+        }
+
+        if (BottomColor != null)
+        {
+            newItem.BottomColor = BottomColor(item);
+        }
+
+        if (TopColor != null)
+        {
+            newItem.TopColor = TopColor(item);
+        }
+
+        return newItem;
+    }
+}

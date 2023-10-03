@@ -1,0 +1,60 @@
+﻿@using Blazor_Lightweight_Charts.Abstractions;
+@using Blazor_Lightweight_Charts.Model.Series;
+@typeparam TItem;
+@inherits SingleValueSeriesComponent<TItem, BaselineDataValue>;
+
+@code {
+
+    public Func<TItem, string>? TopFillColor1 { get; set; }
+    public Func<TItem, string>? TopFillColor2 { get; set; }
+    public Func<TItem, string>? TopLineColor { get; set; }
+    public Func<TItem, string>? BottomFillColor1 { get; set; }
+    public Func<TItem, string>? BottomFillColor2 { get; set; }
+    public Func<TItem, string>? BottomLineColor { get; set; }
+
+    public override string Invocation => "addBaselineSeries";
+
+    protected async override Task<BaselineDataValue> MapItem(TItem item)
+    {
+        double value = Value(item);
+        DateTime date = Date(item);
+
+        string? topFillColor1 = null;
+        if (TopFillColor1 != null)
+        {
+            topFillColor1 = TopFillColor1(item);
+        }
+
+        string? topFillColor2 = null;
+        if (TopFillColor2 != null)
+        {
+            topFillColor1 = TopFillColor2(item);
+        }
+
+        string? topLineColor = null;
+        if (TopLineColor != null)
+        {
+            topLineColor = TopLineColor(item);
+        }
+
+        string? bottomFillColor1 = null;
+        if (BottomFillColor1 != null)
+        {
+            bottomFillColor1 = BottomFillColor1(item);
+        }
+
+        string? bottomFillColor2 = null;
+        if (BottomFillColor2 != null)
+        {
+            bottomFillColor2 = BottomFillColor2(item);
+        }
+
+        string? bottomLineColor = null;
+        if (BottomLineColor != null)
+        {
+            bottomLineColor = BottomLineColor(item);
+        }
+
+        return new BaselineDataValue(date, value, topFillColor1, topFillColor2, topLineColor, bottomFillColor1, bottomFillColor2, bottomLineColor);
+    }
+}

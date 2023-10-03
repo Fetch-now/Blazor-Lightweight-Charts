@@ -17,16 +17,11 @@ namespace Blazor_Lightweight_Charts.Model
             _jSInstance = jSInstance;
         }
 
-        public async Task AddLineSeries(LineSeriesItem[] items)
+        public async Task AddSeries<T>(T[] items, string invocation) where T : TimeValueData
         {
-            var lineSeries = await _jSInstance.InvokeAsync<IJSObjectReference>("addLineSeries");
-            await lineSeries.InvokeVoidAsync("setData", new object[] { items });
-        }
-
-        public async Task AddAreaSeries(AreaSeriesItem[] items)
-        {
-            var areaSeries = await _jSInstance.InvokeAsync<IJSObjectReference>("addAreaSeries");
-            await areaSeries.InvokeVoidAsync("setData", new object[] { items });
+            var series = await _jSInstance.InvokeAsync<IJSObjectReference>(invocation);
+            await series.InvokeVoidAsync("setData", new object[] { items });
+            
             var timeScale = await _jSInstance.InvokeAsync<IJSObjectReference>("timeScale");
             await timeScale.InvokeVoidAsync("fitContent");
         }

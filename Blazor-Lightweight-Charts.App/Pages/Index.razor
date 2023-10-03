@@ -6,15 +6,9 @@
 <LightweightChart>
     <LineSeries TItem="(DateTime, double)"
                 Items="Items"
-                Date="@(i => i.Item1)"
-                Value="@(i => i.Item2)"
+                Date="i => i.Item1"
+                Value="i => i.Item2"
      />
-
-    <AreaSeries TItem="(DateTime, double)"
-                Items="Items"
-                Date="@(i => i.Item1)"
-                Value="@(i => i.Item2)"
-                BottomColor="@(i => i.Item2 < 1000 ? "#ff0000" : "#00ff00")"/>
 </LightweightChart>
 
 @code {

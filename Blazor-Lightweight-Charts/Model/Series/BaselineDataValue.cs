@@ -14,6 +14,7 @@ namespace Blazor_Lightweight_Charts.Model.Series
         public string? BottomFillColor1 { get; set; }    
         public string? BottomFillColor2 { get; set; }
         public string? BottomLineColor { get; set; }
+
         public BaselineDataValue(DateTime date, double value, string? topFillColor1, string? topFillColor2, string? topLineColor, string? bottomFillColor1, string? bottomFillColor2, string? bottomLinecColor) : base(date, value)
         {
             TopFillColor1 = topFillColor1;

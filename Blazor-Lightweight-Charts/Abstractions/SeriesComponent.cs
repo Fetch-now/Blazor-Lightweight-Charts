@@ -8,10 +8,20 @@ using System.Threading.Tasks;
 
 namespace Blazor_Lightweight_Charts.Abstractions
 {
-    public abstract class SeriesComponent : ComponentBase
+    public abstract class SeriesComponent<TItem, TResult> : ComponentBase where TResult : TimeValueData
     {
         [CascadingParameter]
         public LightweightChart Chart { get; set; } = null!;
+
+        [Parameter]
+        public Func<TItem, DateTime> Date { get; set; } = null!;
+
+        [Parameter]
+        public IEnumerable<TItem> Items { get; set; } = new List<TItem>();
+
+        public abstract string Invocation { get; }
+
+        private List<TResult> _items = new List<TResult>();
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -31,6 +41,16 @@ namespace Blazor_Lightweight_Charts.Abstractions
             }
         }
 
-        protected abstract Task Initialize();
+        protected async Task Initialize()
+        {
+            foreach(TItem item in Items)
+            {
+                _items.Add((await MapItem(item)));
+            }
+
+            Chart.AddSeries(_items, Invocation);
+        }
+
+        protected abstract Task<TResult> MapItem(TItem item);
     }
 }

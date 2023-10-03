@@ -1,0 +1,16 @@
+﻿@using Blazor_Lightweight_Charts.Abstractions;
+@using Blazor_Lightweight_Charts.Model.Series;
+@typeparam TItem;
+@inherits SingleValueSeriesComponent<TItem, LineSeriesItem>;
+
+@code {
+
+    public override string Invocation => "addLineSeries";
+
+    protected async override Task<LineSeriesItem> MapItem(TItem item)
+    {
+        double value = Value(item);
+        DateTime date = Date(item);
+        return new LineSeriesItem(date, value);
+    }
+}

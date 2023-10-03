@@ -1,0 +1,28 @@
+﻿@using Blazor_Lightweight_Charts.Abstractions;
+@using Blazor_Lightweight_Charts.Model.Series;
+@typeparam TItem;
+@inherits OHLCValueSeriesComponent<TItem, BarDataValue>;
+
+@code {
+    [Parameter]
+    public Func<TItem, string>? Color { get; set; }
+
+    public override string Invocation => "addBarSeries";
+
+    protected async override Task<BarDataValue> MapItem(TItem item)
+    {
+        DateTime date = Date(item);
+        double open = Open(item);
+        double high = High(item);
+        double low = Low(item);
+        double close = Close(item);
+
+        string? color = null;
+        if(Color != null)
+        {
+            color = Color(item);
+        }
+
+        return new BarDataValue(date, open, high, low, close, color);
+    }
+}

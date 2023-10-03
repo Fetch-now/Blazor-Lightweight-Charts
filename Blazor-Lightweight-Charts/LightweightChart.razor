@@ -18,22 +18,13 @@
     public RenderFragment ChildContent { get; set; }
     public bool IsInitialized { get; set; } = false;
 
-    public async void AddLineSeries(IEnumerable<LineSeriesItem> items)
+    public async void AddSeries<T>(IEnumerable<T> items, string invocation) where T : TimeValueData
     {
         if(Chart == null)
         {
             throw new ArgumentNullException();
         }
-        await Chart.AddLineSeries(items.ToArray());
-    }
-
-    public async void AddAreaSeries(IEnumerable<AreaSeriesItem> items)
-    {
-        if (Chart == null)
-        {
-            throw new ArgumentNullException();
-        }
-        await Chart.AddAreaSeries(items.ToArray());
+        await Chart.AddSeries(items.ToArray(), invocation);
     }
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
