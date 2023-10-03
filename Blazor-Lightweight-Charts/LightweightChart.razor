@@ -38,6 +38,7 @@
                 };
             Chart = await Interop.CreateChart(ChartReference, options);
             IsInitialized = true;
+            StateHasChanged();
         }
     }
 }
