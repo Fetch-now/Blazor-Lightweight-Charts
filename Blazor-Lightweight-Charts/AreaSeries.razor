@@ -1,0 +1,54 @@
+﻿@using Blazor_Lightweight_Charts.Abstractions;
+@using Blazor_Lightweight_Charts.Model.Series;
+@typeparam TItem;
+@inherits SeriesComponent;
+
+@code {
+    [Parameter]
+    public IEnumerable<TItem> Items { get; set; } = new List<TItem>();
+
+    [Parameter]
+    public Func<TItem, double> Value { get; set; } = null!;
+
+    [Parameter]
+    public Func<TItem, DateTime> Date { get; set; } = null!;
+
+    [Parameter]
+    public Func<TItem, string>? LineColor { get; set; }
+
+    [Parameter]
+    public Func<TItem, string>? BottomColor { get; set; }
+
+    [Parameter]
+    public Func<TItem, string>? TopColor { get; set; }
+
+    protected override async Task Initialize()
+    {
+        List<AreaSeriesItem> items = new List<AreaSeriesItem>();
+        foreach (TItem item in Items)
+        {
+            double value = Value(item);
+            DateTime date = Date(item);
+            AreaSeriesItem newItem = new AreaSeriesItem(date, value);
+            if(LineColor != null)
+            {
+                newItem.LineColor = LineColor(item);
+            }
+
+            if (BottomColor != null)
+            {
+                newItem.BottomColor = BottomColor(item);
+            }
+
+            if (TopColor != null)
+            {
+                newItem.TopColor = TopColor(item);
+            }
+
+            items.Add(newItem);
+        }
+
+        Chart.AddAreaSeries(items);
+        await base.OnInitializedAsync();
+    }
+}

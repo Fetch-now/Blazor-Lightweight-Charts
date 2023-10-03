@@ -1,5 +1,35 @@
 ﻿@page "/"
+@using Blazor_Lightweight_Charts.Model.Series;
 
 <PageTitle>Index</PageTitle>
 
-<LightweightChart />
+<LightweightChart>
+    <LineSeries TItem="(DateTime, double)"
+                Items="Items"
+                Date="@(i => i.Item1)"
+                Value="@(i => i.Item2)"
+     />
+
+    <AreaSeries TItem="(DateTime, double)"
+                Items="Items"
+                Date="@(i => i.Item1)"
+                Value="@(i => i.Item2)"
+                BottomColor="@(i => i.Item2 < 1000 ? "#ff0000" : "#00ff00")"/>
+</LightweightChart>
+
+@code {
+    private List<(DateTime, double)> Items { get; set; } = new List<(DateTime, double)>();
+
+    protected override Task OnInitializedAsync()
+    {
+        DateTime today = DateTime.UtcNow;
+        Random rng = new Random();
+        for (int i = 0; i < 20; i++)
+        {
+            DateTime date = today.AddDays(i);
+            double value = rng.Next(0, 2000);
+            Items.Add(new(date, value));
+        }
+        return base.OnInitializedAsync();
+    }
+}

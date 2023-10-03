@@ -14,9 +14,13 @@ namespace Blazor_Lightweight_Charts.Model.Parameters.SeriesParametes
         public bool Visible { get; set; } = true;
         public bool PriceLineVisible { get; set; } = true;
         public PriceLineSource PriceLineSource { get; set; } = PriceLineSource.LastBar;
-        public PriceLineWidth PriceLineWidth { get; set; } = PriceLineWidth._1;
+        public LineWidth PriceLineWidth { get; set; } = LineWidth._1;
         public string PriceLineColor { get; set; } = string.Empty;
         public LineStyle PriceLineStyle { get; set; } = LineStyle.Dashed;
+        public bool BaseLineVisible { get; set; } = true;
+        public string BaseLineColor { get; set; } = "#B2B5BE";
+        public LineWidth BaseLineWidth { get; set; } = LineWidth._1;
+        public LineStyle BaseLineStyle { get; set; } = LineStyle.Solid;
     }
 
     public enum PriceLineSource
@@ -25,7 +29,7 @@ namespace Blazor_Lightweight_Charts.Model.Parameters.SeriesParametes
         LastVisible = 1
     }
 
-    public enum PriceLineWidth
+    public enum LineWidth
     {
         _1 = 1,
         _2 = 2,

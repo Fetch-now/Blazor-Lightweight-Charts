@@ -1,0 +1,29 @@
+﻿@using Blazor_Lightweight_Charts.Abstractions;
+@using Blazor_Lightweight_Charts.Model.Series;
+@typeparam TItem;
+@inherits SeriesComponent;
+
+@code {
+    [Parameter]
+    public IEnumerable<TItem> Items { get; set; } = new List<TItem>();
+
+    [Parameter]
+    public Func<TItem, double> Value { get; set; } = null!;
+
+    [Parameter]
+    public Func<TItem, DateTime> Date { get; set; } = null!;
+
+    protected override async Task Initialize()
+    {
+        List<LineSeriesItem> items = new List<LineSeriesItem>();
+        foreach (TItem item in Items)
+        {
+            double value = Value(item);
+            DateTime date = Date(item);
+            items.Add(new LineSeriesItem(date, value));
+        }
+
+        Chart.AddLineSeries(items);
+        await base.OnInitializedAsync();
+    }
+}

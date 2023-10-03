@@ -1,18 +1,40 @@
-﻿@    using Blazor_Lightweight_Charts.Model;
-@    using Blazor_Lightweight_Charts.Model.Parameters;
-@    using Blazor_Lightweight_Charts.Model.Series;
-    using Blazor_Lightweight_Charts.Model.Parameters.ChartParameters;
+﻿@using Blazor_Lightweight_Charts.Model;
+@using Blazor_Lightweight_Charts.Model.Parameters;
+@using Blazor_Lightweight_Charts.Model.Series;
+@using Blazor_Lightweight_Charts.Model.Parameters.ChartParameters;
 @inject LightweighChartsInterop Interop;
 
-<div @ref="ChartReference" class="lightweight-chart" id="">
-
+<div @ref="ChartReference" class="lightweight-chart">
+    <CascadingValue Value="@this">
+        @ChildContent
+    </CascadingValue>
 </div>
 
 @code {
-    Guid ChartId { get; set; } = Guid.NewGuid();
-
     protected ElementReference ChartReference;
     protected ChartApi Chart { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    public bool IsInitialized { get; set; } = false;
+
+    public async void AddLineSeries(IEnumerable<LineSeriesItem> items)
+    {
+        if(Chart == null)
+        {
+            throw new ArgumentNullException();
+        }
+        await Chart.AddLineSeries(items.ToArray());
+    }
+
+    public async void AddAreaSeries(IEnumerable<AreaSeriesItem> items)
+    {
+        if (Chart == null)
+        {
+            throw new ArgumentNullException();
+        }
+        await Chart.AddAreaSeries(items.ToArray());
+    }
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
@@ -24,17 +46,7 @@
                     Height = 400
                 };
             Chart = await Interop.CreateChart(ChartReference, options);
-            DateTime today = DateTime.UtcNow;
-            List<LineSeriesItem> items = new List<LineSeriesItem>();
-            Random rng = new Random();
-            for (int i = 0; i < 20; i++)
-            {
-                DateTime date = today.AddDays(i);
-                double value = rng.Next(0, 2000);
-                items.Add(new LineSeriesItem(date, value));
-            }
-
-            await Chart.AddLineSeries(items.ToArray());
+            IsInitialized = true;
         }
     }
 }

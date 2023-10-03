@@ -6,16 +6,8 @@ using System.Threading.Tasks;
 
 namespace Blazor_Lightweight_Charts.Model.Series
 {
-    public class LineSeriesItem
+    public class LineSeriesItem : SingleValueData
     {
-        private DateTime _date { get; set; }
-        public double Value { get; set; }
-        public string Time => _date.ToString("yyyy-MM-dd");
-    
-        public LineSeriesItem(DateTime date, double value)
-        {
-            _date = date;
-            Value = value;
-        }
+        public LineSeriesItem(DateTime date, double value) : base(date, value) {}
     }
 }
